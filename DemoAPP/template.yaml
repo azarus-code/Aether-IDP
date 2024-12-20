@@ -94,6 +94,8 @@ spec:
           dockerRepo: ${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
           cluster: ${{parameters.clusterName}}
+          # docker_username: ${{ secrets.DOCKER_USERNAME }}
+          # docker_password: ${{ secrets.DOCKER_PASSWORD }}
     - id: publish
       name: Publish to GitHub
       action: publish:github
