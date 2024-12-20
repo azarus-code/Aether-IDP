@@ -40,12 +40,23 @@ jobs:
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
-      - name: Set up kubeconfig
-        run: |
-          echo "${{ '${{secrets.KUBECONFIG_CONTENT}}' }}" > kubeconfig
-          export KUBECONFIG=$PWD/kubeconfig
+      # - name: Set up kubeconfig
+      #   run: |
+      #     echo "${{ '${{secrets.KUBECONFIG_CONTENT}}' }}" > kubeconfig
+      #     export KUBECONFIG=$PWD/kubeconfig
 
-      # Step 6: Deploy to Kubernetes
+       # Step 2: Log in to Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ '${{secrets.AZURE_CREDENTIALS}}' }}
+
+      # Step 3: Set up AKS credentials
+      - name: Set up AKS
+        run: |
+          az aks get-credentials --resource-group ${{ '${{secrets.AKS_RESOURCE_GROUP}}' }} --name ${{ values.cluster }}
+          kubectl config view
+
       - name: Deploy to Kubernetes
         env:
           IMAGE: ${{values.dockerRepo}}/${{values.name}}:latest
