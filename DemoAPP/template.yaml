@@ -53,6 +53,7 @@ spec:
           type: string
           enum:
             - docker-desktop
+            - bsidp-cluster
           description: Select the AKS cluster Name
           validation:
             required: true

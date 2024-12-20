@@ -42,7 +42,7 @@ jobs:
           version: 'latest'
       - name: Set up kubeconfig
         run: |
-          echo "${{ '${{secrets.DOCKER_KUBE_CONFIG}}' }}" > kubeconfig
+          echo "${{ '${{secrets.KUBECONFIG_CONTENT}}' }}" > kubeconfig
           export KUBECONFIG=$PWD/kubeconfig
 
       # Step 6: Deploy to Kubernetes
