@@ -101,7 +101,7 @@ spec:
         allowedHosts: ['github.com']
         description: '${{ parameters.description }}'
         repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
-        #access: public
+        access: public
         defaultBranch: main
     - id: register-service
       name: Register in Backstage Catalog
