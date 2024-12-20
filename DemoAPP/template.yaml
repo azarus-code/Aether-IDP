@@ -105,7 +105,7 @@ spec:
         description: '${{ parameters.description }}'
         repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
         #access: public
-        visibility: public
+        repoVisibility: public
         defaultBranch: main
     - id: register-service
       name: Register in Backstage Catalog
