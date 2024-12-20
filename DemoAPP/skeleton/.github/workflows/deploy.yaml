@@ -42,7 +42,7 @@ jobs:
           version: 'latest'
       - name: Set up kubeconfig
         run: |
-          echo "${{ '{{k8s_config}}' }}" > kubeconfig
+          echo "${{ '${{k8s_config}}' }}" > kubeconfig
           export KUBECONFIG=$PWD/kubeconfig
 
       # Step 6: Deploy to Kubernetes
