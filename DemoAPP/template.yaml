@@ -93,6 +93,7 @@ spec:
           namespace: ${{ parameters.namespace }}
           dockerRepo: ${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
+          cluster: ${{parameters.clusterName}}
     - id: publish
       name: Publish to GitHub
       action: publish:github
