@@ -94,9 +94,9 @@ spec:
           dockerRepo: ${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
           cluster: ${{parameters.clusterName}}
-          docker_username: "${{ secrets.DOCKER_USERNAME }}"
-          docker_password: "${{ secrets.DOCKER_PASSWORD }}"
-          k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
+          # docker_username: "${{ secrets.DOCKER_USERNAME }}"
+          # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
+          # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
     - id: publish
       name: Publish to GitHub
       action: publish:github
