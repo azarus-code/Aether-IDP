@@ -22,7 +22,35 @@ spec:
         - name: ${{values.name}}
           image: ${{values.dockerRepo}}/${{values.name}}:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: ${{values.name}}
+  namespace: ${{values.namespace}}
+  labels:
+    app: "${{values.name}}"
+    'backstage.io/kubernetes-id': '${{values.name}}'
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: ${{values.name}}
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: "Resource"
+      resource:
+        name: "cpu"
+        targetAverageUtilization: 80
 ---
 apiVersion: v1
 kind: Service
@@ -39,4 +67,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 80

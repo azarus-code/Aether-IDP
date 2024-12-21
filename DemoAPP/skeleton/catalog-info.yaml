@@ -3,6 +3,10 @@ kind: Component
 metadata:
   name:  ${{ values.name | dump }}
   description: ${{ values.description }}
+  tags:
+    - github
+    - aks
+    - nodeJs
   annotations:
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
@@ -11,6 +15,7 @@ metadata:
     backstage.io/kubernetes-id: ${{ values.name | dump }}
     backstage.io/kubernetes-cluster: ${{ values.cluster | dump }}
     backstage.io/kubernetes-namespace: '${{values.namespace}}'
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   owner: ${{values.owner | dump}}
