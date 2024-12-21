@@ -6,7 +6,7 @@ metadata:
   tags:
     - github
     - aks
-    - nodeJs
+    - nodejs
   annotations:
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
