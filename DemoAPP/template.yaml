@@ -30,6 +30,8 @@ spec:
           title: Description
           type: string
           description: Brief description of the service.
+    - title: Pipeline Info
+      properties:
         pipelineType:
           title: Pipeline Type
           type: string
@@ -38,7 +40,48 @@ spec:
           description: Select the pipeline system to use
           validation:
             required: true
-    - title: Deploy Configuration
+    - title: CI Configuration
+      properties:
+        buildType:
+          title: code Build Type
+          type: string
+          enum:
+            - mvn
+            - npm
+            - docker
+          description: Select the service build tool
+          validation:
+            required: true
+        staticScanType:
+          title: Code analysis Type
+          type: string
+          enum:
+            - sonar
+            - EsLint
+            - checkstyle
+          description: Select the static code analysis tool
+          validation:
+            required: true
+        securityScanType:
+          title: SCA- Software Composition Analysis
+          type: string
+          enum:
+            - blackduck
+            - synk
+            - OAWASP
+          description: Select the static code analysis tool
+          validation:
+            required: true
+        dockerRepo:
+          title: Docker Repository
+          type: string
+          enum:
+            - idpdeveacr.azurecr.io
+            - backstagdeveacr.azurecr.io
+          description: Provide the docker repo to push & pull image
+          validation:
+            required: true
+    - title: CD Configuration
       properties:
         deployType:
           title: Deploy Type
@@ -60,18 +103,11 @@ spec:
         namespace:
           title: K8s Namespace
           type: string
+          default: default
           description: Provide the namespace to deploy
           validation:
             required: true
-        dockerRepo:
-          title: Docker Repository
-          type: string
-          enum:
-            - idpdeveacr.azurecr.io
-            - backstagdeveacr.azurecr.io
-          description: Provide the docker repo to push & pull image
-          validation:
-            required: true
+        
     # - title: Pipeline Configuration
     #   properties:
     #     pipelineType:
@@ -95,6 +131,8 @@ spec:
           dockerRepo: ${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
           cluster: ${{parameters.clusterName}}
+          codeAnalysis: ${{parameters.staticScanType}}
+          softwareAnalysis: ${{parameters.securityScanType}}
           # docker_username: "${{ secrets.DOCKER_USERNAME }}"
           # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
           # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
