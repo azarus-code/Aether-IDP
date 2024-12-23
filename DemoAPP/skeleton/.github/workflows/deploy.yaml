@@ -9,7 +9,7 @@ env:
   APP_NAME: ${{values.name}}
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +44,13 @@ jobs:
       #   run: |
       #     echo "${{ '${{secrets.KUBECONFIG_CONTENT}}' }}" > kubeconfig
       #     export KUBECONFIG=$PWD/kubeconfig
-
+  deploy:
+    name: deploy to aks
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
        # Step 2: Log in to Azure
       - name: Azure Login
         uses: azure/login@v1
@@ -62,6 +68,6 @@ jobs:
           IMAGE: ${{values.dockerRepo}}/${{values.name}}:latest
         run: |
           kubectl apply -f k8s/deployment.yaml
-
-          # Verify deployment
+      - name: Verify Deployment
+        run: |
           kubectl rollout status deployment/${{values.name}}
