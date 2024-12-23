@@ -153,7 +153,12 @@ spec:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl  }}
         catalogInfoPath: '/catalog-info.yaml'
       output:
-        entityRef: ${{ steps['register'].output.entityRef }}
+        entityRef: ${{ ssteps.register.output.entityRef }}
+    - id: debug-register
+      name: Debug Register Output
+      action: debug:log
+      input:
+        message: ${{ steps.register.output.entityRef }}
   output:
     links:
       - title: Repository
