@@ -7,6 +7,9 @@ metadata:
     - github
     - aks
     - nodejs
+  links:
+    - url: https://github.com/${{values.owner}}/${{values.name}}
+      title: ${{values.name}} Repository
   annotations:
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
@@ -15,8 +18,8 @@ metadata:
     backstage.io/kubernetes-id: ${{ values.name | dump }}
     backstage.io/kubernetes-cluster: ${{ values.cluster | dump }}
     backstage.io/kubernetes-namespace: '${{values.namespace}}'
-   # backstage.io/techdocs-ref: dir:.
-    backstage.io/techdocs-ref: url:http://<your-service-endpoint>
+    # backstage.io/techdocs-ref: dir:.
+    #backstage.io/techdocs-ref: url:http://<your-service-endpoint>
 spec:
   type: service
   owner: ${{values.owner | dump}}

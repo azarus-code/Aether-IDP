@@ -158,11 +158,16 @@ spec:
       name: Debug Register Output
       action: debug:log
       input:
-        message: ${{ steps.register.output.entityRef }}
+        message: Component:default/${{ parameters.name }}
+    - id: debug-register-full
+      name: Debug Register full Context
+      action: debug:log
+      input:
+        message: "Full Register Context: ${{ steps.register }}"
   output:
     links:
       - title: Repository
         url: ${{ steps['publish'].output.remoteUrl }}
       - title: Open in catalog
-        #icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
+        icon: catalog
+        entityRef: Component:default/${{ parameters.name }}
