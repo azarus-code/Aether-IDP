@@ -150,10 +150,10 @@ spec:
       name: Register in Backstage Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl  }}
+        repoContentsUrl: ${{ steps.register.output.entityRef  }}
         catalogInfoPath: '/catalog-info.yaml'
       output:
-        entityRef: ${{ ssteps.register.output.entityRef }}
+        entityRef: ${{ steps.register.output.entityRef }}
     - id: debug-register
       name: Debug Register Output
       action: debug:log
