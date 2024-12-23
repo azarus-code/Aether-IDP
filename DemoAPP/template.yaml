@@ -112,8 +112,10 @@ spec:
       name: Register in Backstage Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.catalogInfoUrl  }}
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl  }}
         catalogInfoPath: '/catalog-info.yaml'
+      output:
+        entityRef: ${{ steps['register'].output.entityRef }}
   output:
     links:
       - title: Repository
