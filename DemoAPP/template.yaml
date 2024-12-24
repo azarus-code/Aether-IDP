@@ -154,16 +154,6 @@ spec:
         catalogInfoPath: '/catalog-info.yaml'
       output:
         entityRef: ${{ steps.register.output.entityRef }}
-    - id: debug-register
-      name: Debug Register Output
-      action: debug:log
-      input:
-        message: Component:default/${{ parameters.name }}
-    - id: debug-register-full
-      name: Debug Register full Context
-      action: debug:log
-      input:
-        message: "Full Register Context: ${{ steps.register }}"
   output:
     links:
       - title: Repository
