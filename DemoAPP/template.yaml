@@ -26,6 +26,8 @@ spec:
           title: Owner
           type: string
           description: GitHub username or organization owning the repository.
+          enum:
+            - azarus-code
         description:
           title: Description
           type: string
@@ -48,7 +50,7 @@ spec:
           enum:
             - docker
             - npm
-            - npm
+            - mvn
           description: Select the service build tool
           validation:
             required: true
