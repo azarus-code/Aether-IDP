@@ -46,9 +46,9 @@ spec:
           title: code Build Type
           type: string
           enum:
-            - mvn
-            - npm
             - docker
+            - npm
+            - npm
           description: Select the service build tool
           validation:
             required: true
@@ -75,6 +75,7 @@ spec:
         dockerRepo:
           title: Docker Repository
           type: string
+          default: idpdeveacr.azurecr.io
           enum:
             - idpdeveacr.azurecr.io
             - backstagdeveacr.azurecr.io
@@ -91,9 +92,22 @@ spec:
           description: Select the deployment target
           validation:
             required: true
+        deployEnv:
+          title: Deploy Environment
+          type: string
+          default: dev
+          enum:
+            - dev
+            - qa
+            - canary
+            - prod
+          description: Select the deployment target
+          validation:
+            required: true
         clusterName:
           title: Cluster Name
           type: string
+          default: bsidp-cluster
           enum:
             - docker-desktop
             - bsidp-cluster
@@ -146,7 +160,7 @@ spec:
         #access: public
         repoVisibility: public
         defaultBranch: main
-    - id: register-service
+    - id: register
       name: Register in Backstage Catalog
       action: catalog:register
       input:
