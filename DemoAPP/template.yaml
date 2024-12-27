@@ -162,14 +162,12 @@ spec:
         #access: public
         repoVisibility: public
         defaultBranch: main
-    - id: register
+     - id: register-service
       name: Register in Backstage Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.register.output.entityRef  }}
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
-      output:
-        entityRef: ${{ steps.register.output.entityRef }}
   output:
     links:
       - title: Repository
