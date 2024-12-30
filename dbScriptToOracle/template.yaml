@@ -8,6 +8,7 @@ metadata:
     - node
     - azurewebapp
     - github
+  owner: aether_dev
 spec:
   owner: aether_dev@techmahindra.com
   type: database
