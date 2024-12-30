@@ -9,7 +9,7 @@ metadata:
     - azurewebapp
     - github
 spec:
-  owner: rohitlaheri@outlook.com
+  owner: aether_dev@techmahindra.com
   type: service
   parameters:
     - title: Service Information
