@@ -90,7 +90,7 @@ spec:
             required: true
 
         services:
-          title: Select Services
+          title: Select Additional Services
           type: array
           items:
             type: string
