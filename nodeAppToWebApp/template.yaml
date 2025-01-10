@@ -123,7 +123,33 @@ spec:
           description: Provide the namespace to deploy
           validation:
             required: true
-        
+    - title: Infra Configuration
+      properties:
+        storage:
+          title: Select Storage
+          type: string
+          default: Azure Disks
+          enum:
+            - Azure Disks
+        database:
+          title: Database
+          type: string
+          default: Cosmos
+          enum:
+            - SQL Server
+            - Cosmos
+        services:
+          title: Select Services
+          type: array
+          items:
+            type: string
+            enum:
+              - 'Key Vault'
+              - 'CDN'
+              - 'App Insights'
+              - 'Load Balancer'
+          uniqueItems: true
+          ui:widget: checkboxes        
     # - title: Pipeline Configuration
     #   properties:
     #     pipelineType:
