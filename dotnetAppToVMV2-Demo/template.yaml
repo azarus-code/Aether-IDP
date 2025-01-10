@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: dotnet-app-azure_vm-template-Demo-10012024
   title: dotnet-app-azure_vm-template-Demo-10012024
-  description: Creates a dotnet based service repository with github pipeline to deploy in Azure VM.
+  description: Creates a dotnet based service repository with github pipeline to deploy in Azure VM -v2.
   tags:
     - dotnet
     - azurewebapp
