@@ -1,0 +1,118 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: node-app-template
+  title: node-app-template
+  description: Creates a node based service repository with github pipeline to deploy in  AKS.
+  tags:
+    - node
+    - aks
+    - github
+spec:
+  owner: rohitlaheri@outlook.com
+  type: service
+  parameters:
+    - title: Service Information
+      required:
+        - name
+        - owner
+        - description
+      properties:
+        name:
+          title: Service Name
+          type: string
+          description: Unique name for the service.
+        owner:
+          title: Owner
+          type: string
+          description: GitHub username or organization owning the repository.
+        description:
+          title: Description
+          type: string
+          description: Brief description of the service.
+        pipelineType:
+          title: Pipeline Type
+          type: string
+          enum:
+            - github
+          description: Select the pipeline system to use
+          validation:
+            required: true
+    - title: Deploy Configuration
+      properties:
+        deployType:
+          title: Deploy Type
+          type: string
+          enum:
+            - AKS
+          description: Select the deployment target
+          validation:
+            required: true
+        clusterName:
+          title: Cluster Name
+          type: string
+          enum:
+            - docker-desktop
+          description: Select the AKS cluster Name
+          validation:
+            required: true
+        namespace:
+          title: K8s Namespace
+          type: string
+          description: Provide the namespace to deploy
+          validation:
+            required: true
+        dockerRepo:
+          title: Docker Repository
+          type: string
+          enum:
+            - idpdeveacr.azurecr.io
+            - backstagdeveacr.azurecr.io
+          description: Provide the docker repo to push & pull image
+          validation:
+            required: true
+    # - title: Pipeline Configuration
+    #   properties:
+    #     pipelineType:
+    #     title: Pipeline Type
+    #     type: string
+    #     enum:
+    #       - Tekton
+    #     description: Select the pipeline system to use
+    #     validation:
+    #       required: true
+  steps:
+    - id: fetch
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          namespace: ${{ parameters.namespace }}
+          dockerRepo: ${{ parameters.dockerRepo }}
+          description: ${{ parameters.description }}
+          cluster: ${{parameters.clusterName}}
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: '${{ parameters.description }}'
+        repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
+        access: public
+        defaultBranch: main
+    - id: register-service
+      name: Register in Backstage Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

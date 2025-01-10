@@ -1,0 +1,235 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-app-azure_vm-template-Demo-10012024
+  title: dotnet-app-azure_vm-template-Demo-10012024
+  description: Creates a dotnet based service repository with github pipeline to deploy in Azure VM.
+  tags:
+    - dotnet
+    - azurewebapp
+    - github
+spec:
+  owner: aether_dev@techmahindra.com
+  type: service
+  parameters:
+    - title: Service Information
+      required:
+        - name
+        - owner
+        - description
+      properties:
+        name:
+          title: Service Name
+          type: string
+          description: Unique name for the service.
+        owner:
+          title: Owner
+          type: string
+          description: GitHub username or organization owning the repository.
+          enum:
+            - azarus-code
+        description:
+          title: Description
+          type: string
+          description: Brief description of the service.
+    - title: Infra Configuration
+      properties:
+        deployType:
+          title: Deploy Type
+          type: string
+          default: Webapp
+          enum:
+            - Webapp
+            - AKS
+          description: Select the deployment target
+          validation:
+            required: true
+        WebAppSku:
+          title: Deployment Service Plan
+          type: string
+          default: Medium
+          enum:
+            - Small
+            - Medium
+            - Large
+          description: Select the target service plan for deployment
+          validation:
+            required: true
+        storage:
+          title: Select Storage
+          type: string
+          default: Azure Disks
+          enum:
+            - Azure Disks
+        StorageSku:
+          title: Storage Plan
+          type: string
+          default: Standard
+          enum:
+            - Standard
+            - Premium
+          description: Select the target service plan for Storage
+          validation:
+            required: true
+        database:
+          title: Database
+          type: string
+          default: Cosmos
+          enum:
+            - SQL Server
+            - Cosmos
+        DatabaseSku:
+          title: Database Service Plan
+          type: string
+          default: Premium
+          enum:
+            - Standard
+            - Premium
+          description: Select the target service plan for Database
+          validation:
+            required: true
+
+        services:
+          title: Select Additional Services
+          type: array
+          items:
+            type: string
+            enum:
+              - 'Key Vault'
+              - 'CDN'
+              - 'App Insights'
+              - 'Load Balancer'
+          uniqueItems: true
+          ui:widget: checkboxes
+
+    - title: CI/CD Configuration
+      properties:
+        pipelineType:
+          title: Pipeline Type
+          type: string
+          enum:
+            - github
+          description: Select the pipeline system to use
+          validation:
+            required: true
+        buildType:
+          title: code Build Type
+          type: string
+          enum:
+            - docker
+            - npm
+            - mvn
+          description: Select the service build tool
+          validation:
+            required: true
+        staticScanType:
+          title: Code analysis Type
+          type: string
+          enum:
+            - sonar
+            - EsLint
+            - checkstyle
+          description: Select the static code analysis tool
+          validation:
+            required: true
+        securityScanType:
+          title: SCA- Software Composition Analysis
+          type: string
+          enum:
+            - blackduck
+            - synk
+            - OAWASP
+          description: Select the static code analysis tool
+          validation:
+            required: true
+        dockerRepo:
+          title: Docker Repository
+          type: string
+          default: idpdeveacr.azurecr.io
+          enum:
+            - idpdeveacr.azurecr.io
+            - backstagdeveacr.azurecr.io
+          description: Provide the docker repo to push & pull image
+          validation:
+            required: true 
+        deployEnv:
+          title: Deploy Environment
+          type: string
+          default: dev
+          enum:
+            - dev
+            - qa
+            - canary
+            - prod
+          description: Select the deployment target
+          validation:
+            required: true
+        clusterName:
+          title: Cluster Name
+          type: string
+          default: bsidp-cluster
+          enum:
+            - docker-desktop
+            - bsidp-cluster
+          description: Select the AKS cluster Name
+          validation:
+            required: true
+        namespace:
+          title: K8s Namespace
+          type: string
+          default: default
+          description: Provide the namespace to deploy
+          validation:
+            required: true
+        
+    # - title: Pipeline Configuration
+    #   properties:
+    #     pipelineType:
+    #     title: Pipeline Type
+    #     type: string
+    #     enum:
+    #       - Tekton
+    #     description: Select the pipeline system to use
+    #     validation:
+    #       required: true
+  steps:
+    - id: fetch
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          namespace: ${{ parameters.namespace }}
+          dockerRepo: ${{ parameters.dockerRepo }}
+          description: ${{ parameters.description }}
+          cluster: ${{parameters.clusterName}}
+          codeAnalysis: ${{parameters.staticScanType}}
+          softwareAnalysis: ${{parameters.securityScanType}}
+          # docker_username: "${{ secrets.DOCKER_USERNAME }}"
+          # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
+          # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: '${{ parameters.description }}'
+        repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
+        #access: public
+        repoVisibility: public
+        defaultBranch: main
+    - id: register-service
+      name: Register in Backstage Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: Component:default/${{ parameters.name }}
