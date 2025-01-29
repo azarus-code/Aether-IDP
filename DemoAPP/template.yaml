@@ -8,7 +8,8 @@ metadata:
     - node
     - aks
     - github
-    - recommended
+  groups:
+    - frontend
 spec:
   owner: aether_dev@techmahindra.com
   type: Website
