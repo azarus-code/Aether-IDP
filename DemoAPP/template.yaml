@@ -2,15 +2,15 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: node-app-template
-  title: node-app-template
-  description: Creates a node based service repository with github pipeline to deploy in  AKS.
+  title: NodeJS App Template
+  description: A starter template for creating web app using Node.js. Includes a pre-built structure for RESTful endpoints, basic security configuration, and following OTEL and Open API specifications. Perfect for quickly starting app development.
   tags:
     - node
     - aks
     - github
 spec:
   owner: aether_dev@techmahindra.com
-  type: service
+  type: Website
   parameters:
     - title: Service Information
       required:
