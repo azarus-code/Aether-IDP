@@ -3,6 +3,8 @@ kind: Component
 metadata:
   name:  ${{ values.name | dump }}
   description: ${{ values.description }}
+  annotations:
+    backstage.io/icon: database
   tags:
     - github
     - aks
