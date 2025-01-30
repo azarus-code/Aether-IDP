@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{values.name}}
+  namespace: ${{values.namespace}}
+  labels:
+    'backstage.io/kubernetes-id': '${{values.name}}'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${{values.name}}
+  template:
+    metadata:
+      labels:
+        app: ${{values.name}}
+        'backstage.io/kubernetes-id': '${{values.name}}'
+    spec:
+      imagePullSecrets:
+      - name: registry-auth
+      containers:
+        - name: ${{values.name}}
+          image: ${{values.dockerRepo}}/${{values.name}}:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{values.name}}
+  namespace: ${{values.namespace}}
+  labels:
+    #tekton.dev/pipelines: ${{values.namespace}}/springboot-pipeline
+    'backstage.io/kubernetes-id': '${{values.name}}'
+spec:
+  type: LoadBalancer
+  selector:
+    app: ${{values.name}}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
