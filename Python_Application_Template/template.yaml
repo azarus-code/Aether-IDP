@@ -4,10 +4,6 @@ metadata:
   name: python-app-template
   title: Python Application Template
   description: A template for building backend applications with Python. Includes support for frameworks like Flask or Django (depending on the setup), as well as database integration and deployment tools. Perfect for Python developers looking for speed and efficiency.
-  tags:
-    - node
-    - aks
-    - github
   groups:
     - web
 spec:

@@ -4,10 +4,6 @@ metadata:
   name: dotnet-job-template
   title: DotNet Job Template
   description: A template focused on creating recurring routines or jobs using .NET. Includes integration with scheduling tools and detailed logging for execution monitoring.
-  tags:
-    - node
-    - aks
-    - github
   groups:
     - backend
 spec:

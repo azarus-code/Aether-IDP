@@ -4,10 +4,6 @@ metadata:
   name: epic-trn-stamp-template
   title: EPIC Training Stamp
   description: EPIC EHR training environment on Azure Virtual Machines. Includes respective network, database and storage components as well as governance policies and access controls.
-  tags:
-    - node
-    - aks
-    - github
   groups:
     - epic
 spec:
