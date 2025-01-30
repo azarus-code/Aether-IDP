@@ -22,6 +22,6 @@ metadata:
     # backstage.io/techdocs-ref: dir:.
     #backstage.io/techdocs-ref: url:http://<your-service-endpoint>
 spec:
-  type: service
+  type: website
   owner: ${{values.owner | dump}}
   lifecycle: production
