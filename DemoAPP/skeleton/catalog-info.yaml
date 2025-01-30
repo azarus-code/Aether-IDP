@@ -3,8 +3,6 @@ kind: Component
 metadata:
   name:  ${{ values.name | dump }}
   description: ${{ values.description }}
-  annotations:
-    backstage.io/icon: database
   tags:
     - github
     - aks
@@ -13,6 +11,7 @@ metadata:
     - url: https://github.com/${{values.owner}}/${{values.name}}
       title: ${{values.name}} Repository
   annotations:
+    backstage.io/icon: web
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
     backstage.io/managed-by-location: url:https://github.com/${{values.owner}}/${{values.name}}
