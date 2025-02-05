@@ -59,7 +59,7 @@ spec:
     - title: CD Configuration
       properties:
         deployType:
-          title: Deploy Type
+          title: Deployment Target
           type: string
           default: AKS
           enum:
@@ -74,15 +74,16 @@ spec:
           validation:
             required: true
         deployEnv:
-          title: Deploy Environment
-          type: string
-          default: Dev
+          title: Deployment Environment
+          type: array
+          ui:widget: checkboxes
+          default: Development
           enum:
-            - Dev
-            - QA
+            - Development
+            - Staging
             - Canary
-            - Prod
-          description: Select the deployment target
+            - Production
+          description: Select the deployment environment
           validation:
             required: true
         
