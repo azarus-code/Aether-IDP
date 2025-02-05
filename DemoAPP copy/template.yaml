@@ -61,17 +61,22 @@ spec:
         deployType:
           title: Deploy Type
           type: string
+          default: AKS
           enum:
             - AKS
             - EKS
             - GKE
+          enumNames:
+            - Azure Kubernetes Service
+            - Elastic Kubernetes Service
+            - Google Kubernetes Engine
           description: Select the deployment target
           validation:
             required: true
         deployEnv:
           title: Deploy Environment
           type: string
-          default: dev
+          default: Dev
           enum:
             - Dev
             - QA
