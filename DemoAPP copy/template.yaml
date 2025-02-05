@@ -77,7 +77,6 @@ spec:
           title: Deployment Environment
           type: array
           ui:widget: checkboxes
-          default: Development
           items: 
             type: string
             enum:
@@ -86,6 +85,7 @@ spec:
               - Canary
               - Production
           description: Select the deployment environment
+          uniqueItems: true
           validation:
             required: true
         
