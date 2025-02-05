@@ -10,78 +10,50 @@ spec:
   owner: aether_dev@techmahindra.com
   type: Website
   parameters:
-    - title: Application Information
+    - title: Application/Service Information
       required:
         - name
         - owner
         - description
       properties:
         name:
-          title: Application Name
+          title: Application/Service Name
           type: string
-          description: Unique name of the Application.
+          description: Unique name of the Application/Service.
+        description:
+          title: Description
+          type: string
+          description: Brief description of the Application/Service.
         owner:
           title: Owner/Team
           type: string
           description: Team who owns the Application/Service.
-          oneOf:
-            - const: azarus-code
-              title: "test title"
-              description: "sample description"
-        description:
-          title: Description
-          type: string
-          description: Brief description of the service.
+          default: azarus-code
+          enum:
+            - azarus-code
+            - dev-team
+            - engineering-team
+            - ops-team
+            - analytics-team
+          enumNames:
+            - Cloud App Team
+            - Finance Dev Team
+            - Platform Enginerring Team
+            - SRE Operation Team
+            - Data Analytics Team
     - title: Pipeline Info
       properties:
         pipelineType:
           title: Pipeline Type
           type: string
+          default: Github Actions
           enum:
-            - github
-          description: Select the pipeline system to use
-          validation:
-            required: true
-    - title: CI Configuration
-      properties:
-        buildType:
-          title: code Build Type
-          type: string
-          enum:
-            - docker
-            - npm
-            - mvn
-          description: Select the service build tool
-          validation:
-            required: true
-        staticScanType:
-          title: Code analysis Type
-          type: string
-          enum:
-            - sonar
-            - EsLint
-            - checkstyle
-          description: Select the static code analysis tool
-          validation:
-            required: true
-        securityScanType:
-          title: SCA- Software Composition Analysis
-          type: string
-          enum:
-            - blackduck
-            - synk
-            - OAWASP
-          description: Select the static code analysis tool
-          validation:
-            required: true
-        dockerRepo:
-          title: Docker Repository
-          type: string
-          default: idpdeveacr.azurecr.io
-          enum:
-            - idpdeveacr.azurecr.io
-            - backstagdeveacr.azurecr.io
-          description: Provide the docker repo to push & pull image
+            - Github Actions
+            - Azure DevOps
+            - Jenkins
+            - Tekton
+            - Circle CI
+          description: Select the CI/CD pipeline system to use
           validation:
             required: true
     - title: CD Configuration
@@ -91,6 +63,8 @@ spec:
           type: string
           enum:
             - AKS
+            - EKS
+            - GKE
           description: Select the deployment target
           validation:
             required: true
@@ -99,28 +73,11 @@ spec:
           type: string
           default: dev
           enum:
-            - dev
-            - qa
-            - canary
-            - prod
+            - Dev
+            - QA
+            - Canary
+            - Prod
           description: Select the deployment target
-          validation:
-            required: true
-        clusterName:
-          title: Cluster Name
-          type: string
-          default: bsidp-cluster
-          enum:
-            - docker-desktop
-            - bsidp-cluster
-          description: Select the AKS cluster Name
-          validation:
-            required: true
-        namespace:
-          title: K8s Namespace
-          type: string
-          default: default
-          description: Provide the namespace to deploy
           validation:
             required: true
         
@@ -143,12 +100,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
-          namespace: ${{ parameters.namespace }}
-          dockerRepo: ${{ parameters.dockerRepo }}
+          namespace: 'default' #${{ parameters.namespace }}
+          dockerRepo: 'idpdeveacr.azurecr.io' #${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
-          cluster: ${{parameters.clusterName}}
-          codeAnalysis: ${{parameters.staticScanType}}
-          softwareAnalysis: ${{parameters.securityScanType}}
+          cluster: 'bsidp-cluster' #${{parameters.clusterName}}
+          codeAnalysis: 'sonar' #${{parameters.staticScanType}}
+          softwareAnalysis: 'blackduck' #${{parameters.securityScanType}}
           # docker_username: "${{ secrets.DOCKER_USERNAME }}"
           # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
           # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
