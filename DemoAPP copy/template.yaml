@@ -78,11 +78,13 @@ spec:
           type: array
           ui:widget: checkboxes
           default: Development
-          enum:
-            - Development
-            - Staging
-            - Canary
-            - Production
+          items: 
+            type: string
+            enum:
+              - Development
+              - Staging
+              - Canary
+              - Production
           description: Select the deployment environment
           validation:
             required: true
