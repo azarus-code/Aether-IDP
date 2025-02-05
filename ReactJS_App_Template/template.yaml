@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: reactjs-app-template
-  title: ReactJS Application Template
+  title: ReactJS Application
   description: A frontend template built with React.js, ideal for creating modern and dynamic user interfaces. Includes reusable components, basic routing, and integration with external APIs. Great for interactive web applications..
   groups:
     - frontend

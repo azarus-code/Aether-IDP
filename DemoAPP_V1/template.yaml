@@ -1,0 +1,141 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: node-app-template-v2
+  title: NodeJS App
+  description: A starter template for creating web app using Node.js. Includes a pre-built structure for RESTful endpoints, basic security configuration, and following OTEL and Open API specifications. Perfect for quickly starting app development.
+  groups:
+    - frontend
+spec:
+  owner: aether_dev@techmahindra.com
+  type: Website
+  parameters:
+    - title: Application / Service Information
+      required:
+        - name
+        - owner
+        - description
+      properties:
+        name:
+          title: Application / Service Name
+          type: string
+          description: Unique name of the Application / Service.
+        description:
+          title: Description
+          type: string
+          description: Brief description of the Application / Service.
+        owner:
+          title: Owner/Team
+          type: string
+          description: Team who owns the Application / Service.
+          default: azarus-code
+          enum:
+            - azarus-code
+            - dev-team
+            - engineering-team
+            - ops-team
+            - analytics-team
+          enumNames:
+            - Cloud App Team
+            - Finance Dev Team
+            - Platform Enginerring Team
+            - SRE Operation Team
+            - Data Analytics Team
+    - title: Pipeline Info
+      properties:
+        pipelineType:
+          title: Pipeline Type
+          type: string
+          default: Github Actions
+          enum:
+            - Github Actions
+            - Azure DevOps
+            - Jenkins
+            - Tekton
+            - Circle CI
+          description: Select the CI/CD pipeline system to use
+          validation:
+            required: true
+    - title: CD Configuration
+      properties:
+        deployType:
+          title: Deployment Target
+          type: string
+          default: AKS
+          enum:
+            - AKS
+            - EKS
+            - GKE
+          enumNames:
+            - Azure Kubernetes Service
+            - Elastic Kubernetes Service
+            - Google Kubernetes Engine
+          description: Select the deployment target
+          validation:
+            required: true
+        deployEnv:
+          title: Select Deployment Environments
+          type: array
+          ui:widget: checkboxes
+          items: 
+            type: string
+            enum:
+              - Development
+              - Staging
+              - Canary
+              - Production
+          uniqueItems: true
+          validation:
+            required: true
+        
+    # - title: Pipeline Configuration
+    #   properties:
+    #     pipelineType:
+    #     title: Pipeline Type
+    #     type: string
+    #     enum:
+    #       - Tekton
+    #     description: Select the pipeline system to use
+    #     validation:
+    #       required: true
+  steps:
+    - id: fetch
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          namespace: 'default' #${{ parameters.namespace }}
+          dockerRepo: 'idpdeveacr.azurecr.io' #${{ parameters.dockerRepo }}
+          description: ${{ parameters.description }}
+          cluster: 'bsidp-cluster' #${{parameters.clusterName}}
+          codeAnalysis: 'sonar' #${{parameters.staticScanType}}
+          softwareAnalysis: 'blackduck' #${{parameters.securityScanType}}
+          # docker_username: "${{ secrets.DOCKER_USERNAME }}"
+          # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
+          # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: '${{ parameters.description }}'
+        repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
+        #access: public
+        repoVisibility: public
+        defaultBranch: main
+    - id: register-service
+      name: Register in Backstage Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: Component:default/${{ parameters.name }}

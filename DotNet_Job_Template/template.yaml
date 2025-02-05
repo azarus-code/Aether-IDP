@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: dotnet-job-template
-  title: DotNet Job Template
+  title: DotNet Job
   description: A template focused on creating recurring routines or jobs using .NET. Includes integration with scheduling tools and detailed logging for execution monitoring.
   groups:
     - backend

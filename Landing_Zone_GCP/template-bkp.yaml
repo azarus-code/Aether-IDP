@@ -1,14 +1,16 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: angular-app-template
-  title: Angular App
-  description: A starter template for creating web app using Node.js. Includes a pre-built structure for RESTful endpoints, basic security configuration, and following OTEL and Open API specifications. Perfect for quickly starting app development.
-  groups:
-    - frontend
+  name: node-app-template
+  title: node-app-template
+  description: Creates a node based service repository with github pipeline to deploy in  AKS.
+  tags:
+    - node
+    - aks
+    - github
 spec:
-  owner: aether_dev@techmahindra.com
-  type: Website
+  owner: rohitlaheri@outlook.com
+  type: service
   parameters:
     - title: Service Information
       required:
@@ -24,14 +26,10 @@ spec:
           title: Owner
           type: string
           description: GitHub username or organization owning the repository.
-          enum:
-            - azarus-code
         description:
           title: Description
           type: string
           description: Brief description of the service.
-    - title: Pipeline Info
-      properties:
         pipelineType:
           title: Pipeline Type
           type: string
@@ -40,49 +38,7 @@ spec:
           description: Select the pipeline system to use
           validation:
             required: true
-    - title: CI Configuration
-      properties:
-        buildType:
-          title: code Build Type
-          type: string
-          enum:
-            - docker
-            - npm
-            - mvn
-          description: Select the service build tool
-          validation:
-            required: true
-        staticScanType:
-          title: Code analysis Type
-          type: string
-          enum:
-            - sonar
-            - EsLint
-            - checkstyle
-          description: Select the static code analysis tool
-          validation:
-            required: true
-        securityScanType:
-          title: SCA- Software Composition Analysis
-          type: string
-          enum:
-            - blackduck
-            - synk
-            - OAWASP
-          description: Select the static code analysis tool
-          validation:
-            required: true
-        dockerRepo:
-          title: Docker Repository
-          type: string
-          default: idpdeveacr.azurecr.io
-          enum:
-            - idpdeveacr.azurecr.io
-            - backstagdeveacr.azurecr.io
-          description: Provide the docker repo to push & pull image
-          validation:
-            required: true
-    - title: CD Configuration
+    - title: Deploy Configuration
       properties:
         deployType:
           title: Deploy Type
@@ -92,36 +48,29 @@ spec:
           description: Select the deployment target
           validation:
             required: true
-        deployEnv:
-          title: Deploy Environment
-          type: string
-          default: dev
-          enum:
-            - dev
-            - qa
-            - canary
-            - prod
-          description: Select the deployment target
-          validation:
-            required: true
         clusterName:
           title: Cluster Name
           type: string
-          default: bsidp-cluster
           enum:
             - docker-desktop
-            - bsidp-cluster
           description: Select the AKS cluster Name
           validation:
             required: true
         namespace:
           title: K8s Namespace
           type: string
-          default: default
           description: Provide the namespace to deploy
           validation:
             required: true
-        
+        dockerRepo:
+          title: Docker Repository
+          type: string
+          enum:
+            - idpdeveacr.azurecr.io
+            - backstagdeveacr.azurecr.io
+          description: Provide the docker repo to push & pull image
+          validation:
+            required: true
     # - title: Pipeline Configuration
     #   properties:
     #     pipelineType:
@@ -145,11 +94,6 @@ spec:
           dockerRepo: ${{ parameters.dockerRepo }}
           description: ${{ parameters.description }}
           cluster: ${{parameters.clusterName}}
-          codeAnalysis: ${{parameters.staticScanType}}
-          softwareAnalysis: ${{parameters.securityScanType}}
-          # docker_username: "${{ secrets.DOCKER_USERNAME }}"
-          # docker_password: "${{ secrets.DOCKER_PASSWORD }}"
-          # k8s_config: "${{ secrets.DOCKER_KUBE_CONFIG }}"
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -157,8 +101,7 @@ spec:
         allowedHosts: ['github.com']
         description: '${{ parameters.description }}'
         repoUrl: 'github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}'
-        #access: public
-        repoVisibility: public
+        access: public
         defaultBranch: main
     - id: register-service
       name: Register in Backstage Catalog
@@ -169,7 +112,7 @@ spec:
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: Component:default/${{ parameters.name }}
+        entityRef: ${{ steps.register.output.entityRef }}

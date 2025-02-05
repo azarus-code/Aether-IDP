@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: dotnet-worker-template
-  title: DotNet Worker Template
+  title: DotNet Worker
   description: A template designed for creating background workers or services using .NET. Ideal for automation tasks, asynchronous processing, or integration with message queues like RabbitMQ or Kafka.
   groups:
     - backend

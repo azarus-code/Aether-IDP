@@ -1,33 +1,33 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: node-app-template-v2
-  title: NodeJS App Template-v2
-  description: A starter template for creating web app using Node.js. Includes a pre-built structure for RESTful endpoints, basic security configuration, and following OTEL and Open API specifications. Perfect for quickly starting app development.
+  name: GCP-Landing-Zone
+  title: GCP Landing Zone
+  description: Use this template to setup a fully compliant GCP Landing Zone with pre-configured, secure, and scalable foundation, including networking, policies, RBAC on Google Cloud
   groups:
-    - frontend
+    - landingzone
 spec:
   owner: aether_dev@techmahindra.com
   type: Website
   parameters:
-    - title: Application/Service Information
+    - title: Application / Service Information
       required:
         - name
         - owner
         - description
       properties:
         name:
-          title: Application/Service Name
+          title: Application / Service Name
           type: string
-          description: Unique name of the Application/Service.
+          description: Unique name of the Application / Service.
         description:
           title: Description
           type: string
-          description: Brief description of the Application/Service.
+          description: Brief description of the Application / Service.
         owner:
           title: Owner/Team
           type: string
-          description: Team who owns the Application/Service.
+          description: Team who owns the Application / Service.
           default: azarus-code
           enum:
             - azarus-code
