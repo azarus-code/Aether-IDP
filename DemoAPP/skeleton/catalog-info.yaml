@@ -11,7 +11,6 @@ metadata:
     - url: https://github.com/${{values.owner}}/${{values.name}}
       title: ${{values.name}} Repository
   annotations:
-    backstage.io/icon: web
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
     backstage.io/managed-by-location: url:https://github.com/${{values.owner}}/${{values.name}}
@@ -22,6 +21,6 @@ metadata:
     # backstage.io/techdocs-ref: dir:.
     #backstage.io/techdocs-ref: url:http://<your-service-endpoint>
 spec:
-  type: website
+  type: service
   owner: ${{values.owner | dump}}
   lifecycle: production
