@@ -8,7 +8,7 @@ metadata:
     - epic
 spec:
   owner: aether_dev@techmahindra.com
-  type: Website
+  type: Epic
   parameters:
     - title: Service Information
       required:
