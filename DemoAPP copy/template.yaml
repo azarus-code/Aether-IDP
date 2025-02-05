@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: node-app-template
-  title: NodeJS App Template
+  name: node-app-template-v2
+  title: NodeJS App Template-v2
   description: A starter template for creating web app using Node.js. Includes a pre-built structure for RESTful endpoints, basic security configuration, and following OTEL and Open API specifications. Perfect for quickly starting app development.
   groups:
     - frontend
