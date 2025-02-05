@@ -8,7 +8,7 @@ metadata:
     - frontend
 spec:
   owner: aether_dev@techmahindra.com
-  type: service
+  type: Website
   parameters:
     - title: Service Information
       required:
