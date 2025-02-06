@@ -8,7 +8,7 @@ metadata:
     - aks
     - nodejs
   links:
-    - url: https://github.com/${{values.owner}}/${{values.name}}
+    - url: http://20.241.159.207/d/prom-k8s-monitoring/lattice-monitoring
       title: ${{values.name}} Repository
   annotations:
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
