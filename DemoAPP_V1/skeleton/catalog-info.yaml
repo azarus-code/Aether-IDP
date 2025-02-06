@@ -9,7 +9,7 @@ metadata:
     - nodejs
   links:
     - url: http://20.241.159.207/d/prom-k8s-monitoring/lattice-monitoring
-      title: ${{values.name}} Repository
+      title: Grafana Dashboard
   annotations:
     github.com/project-slug: ${{ values.owner + "/" + values.name }}
     github.com/workflow-ref: .github/workflows/deploy.yaml@main
