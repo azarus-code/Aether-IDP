@@ -50,6 +50,7 @@ spec:
           enum:
             - Github Actions
             - Azure DevOps
+            - Gitlab CI
             - Jenkins
             - Tekton
             - Circle CI
