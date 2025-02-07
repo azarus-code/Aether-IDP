@@ -8,7 +8,7 @@ metadata:
     - landingzone
 spec:
   owner: aether_dev@techmahindra.com
-  type: Website
+  type: LandingZone
   parameters:
     - title: Application / Service Information
       required:
